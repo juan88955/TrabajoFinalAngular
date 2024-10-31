@@ -1,0 +1,64 @@
+<div class="min-h-screen bg-gray-100 py-6 flex flex-col justify-start sm:py-12">
+    <div class="relative py-3 sm:max-w-xl sm:mx-auto">
+        <div class="relative px-4 py-10 bg-white shadow-lg sm:rounded-3xl sm:p-20">
+
+            <div class="max-w-md mx-auto">
+                <div class="divide-y divide-gray-200">
+                    <!-- Header -->
+                    <div class="py-8 text-center">
+                        <h1 class="text-4xl font-bold text-blue-600 mb-4">Pokémon Finder</h1>
+
+                        <!-- Búsqueda -->
+                        <div class="flex gap-2 justify-center items-center">
+                            <span class="p-input-icon-right w-full">
+                                <i class="pi pi-search"></i>
+                                <input type="text" pInputText class="w-full" placeholder="Buscar por nombre o ID"
+                                    #searchInput (keyup.enter)="search(searchInput.value)" />
+                            </span>
+                            <p-button [loading]="loading()" icon="pi pi-search"
+                                (onClick)="search(searchInput.value)"></p-button>
+                        </div>
+                    </div>
+
+                    <!-- Resultado -->
+                    <div class="py-8">
+                        <!-- Loading -->
+                        <div *ngIf="loading()" class="flex justify-center">
+                            <p-progressSpinner></p-progressSpinner>
+                        </div>
+
+                        <!-- Error -->
+                        <div *ngIf="error()" class="text-red-500 text-center">
+                            {{ error() }}
+                        </div>
+
+                        <!-- Pokémon -->
+                        <div *ngIf="pokemon() && !error()" class="text-center">
+                            <h2 class="text-2xl font-bold capitalize mb-4">{{ pokemon()?.name }}</h2>
+                            <div class="relative w-48 h-48 mx-auto">
+                                <img [src]="currentSprite()" alt="Pokemon sprite"
+                                    class="w-full h-full object-contain" />
+                            </div>
+
+                            <!-- Tipos -->
+                            <div class="flex gap-2 justify-center mt-4">
+                                <span *ngFor="let type of pokemon()?.types"
+                                    class="px-3 py-1 rounded-full text-white text-sm" [ngClass]="{
+                      'bg-red-500': type.type.name === 'fire',
+                      'bg-blue-500': type.type.name === 'water',
+                      'bg-green-500': type.type.name === 'grass',
+                      'bg-yellow-500': type.type.name === 'electric',
+                      'bg-purple-500': type.type.name === 'poison',
+                      'bg-gray-500': type.type.name === 'normal'
+                    }">
+                                    {{ type.type.name }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
